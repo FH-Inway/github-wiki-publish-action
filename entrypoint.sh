@@ -52,7 +52,11 @@ tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 )
 
 debug "Syncing contents of $1 to repository"
-rsync -avzr --delete --exclude='.git/' "$1" "$tmp_dir" || exit 1
+folders=$1
+for folder in $folders
+do
+    rsync -avzr --delete --exclude='.git/' "$folder" "$tmp_dir" || exit 1
+done
 
 debug "Committing and pushing changes"
 (
